@@ -7,10 +7,11 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author henri
+ * @author Henrique RA 2312808
  */
 public class Verificacao {
     
+    //Verifica se o CPF passado como parâmetro é válido, retorna true ou false
     public static boolean isValidCPF(String cpf) {
         //Usada para calcular os digitos verificadores
         int soma = 0;
@@ -47,6 +48,8 @@ public class Verificacao {
         return resultado;
     }
     
+    
+    //Verifica se o email passado como parâmetro é válido retorna true ou false
     public static boolean isValidEmail(String email) {
         
         // verifica se começa ou termina com .

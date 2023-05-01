@@ -1,19 +1,23 @@
-
 package desktopentrega1.view;
+
+import desktopentrega1.controller.ControllerArquivoBinarioCliente;
 import desktopentrega1.model.Cliente;
 import desktopentrega1.verificar.Verificacao;
 import desktopentrega1.controller.ControllerArquivoTextoCliente;
 import javax.swing.JOptionPane;
 
-
 /**
  *
- * @author Henrique
+ * @author Henrique RA 2312808
  */
 public class TelaCadastroCliente extends javax.swing.JFrame {
-  
-    Cliente cliente ;
-    ControllerArquivoTextoCliente controller ;
+
+    Cliente cliente;
+    ControllerArquivoBinarioCliente controllerBin;
+    ControllerArquivoTextoCliente controllerText;
+    
+
+
     /**
      * Creates new form janelaCadastro
      */
@@ -200,27 +204,42 @@ public class TelaCadastroCliente extends javax.swing.JFrame {
     // Recebe os dados do cliente e salva no arquivo de texto selecionado
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         // TODO add your handling code here:
-        cliente = new Cliente();
-      
-        cliente.setNome(jTextFieldNome.getText());
-        cliente.setCpf(jTextFieldCpf.getText());
-        cliente.setCep(jTextFieldCep.getText());
-        cliente.setTelefone(jTextFieldTelefone.getText());
-        cliente.setEmail(    jTextFieldEmail.getText());
-        cliente.setEndereco(jTextFieldEndereco.getText());
-        
-        if( Verificacao.isValidCPF(cliente.getCpf()) == true &&
-            Verificacao.isValidEmail(cliente.getEmail()) == true){
-            controller.setCliente(cliente);
-            controller.gravarCliente();
-            limparCampos();          
-        }else{
-            JOptionPane.showMessageDialog(null, "Verifique os dados e tente novamente"
-                    , "Alerta", JOptionPane.WARNING_MESSAGE);
-        }
-        
+        boolean verificacao;
+        try {
+            
+            cliente = new Cliente();
+            cliente.setNome(jTextFieldNome.getText());
+            cliente.setCpf(jTextFieldCpf.getText());
+            cliente.setCep(jTextFieldCep.getText());
+            cliente.setTelefone(jTextFieldTelefone.getText());
+            cliente.setEmail(jTextFieldEmail.getText());
+            cliente.setEndereco(jTextFieldEndereco.getText());
+            verificacao = Verificacao.isValidCPF(cliente.getCpf()) == true
+                    && Verificacao.isValidEmail(cliente.getEmail()) == true;
+              
+            if (verificacao) {
+                if(controllerBin!=null){
+                    controllerBin.setCliente(cliente);
+                    controllerBin.gravarClientes();                    
+                }else{
+                    controllerText.setCliente(cliente);
+                    controllerText.gravarClientes();
+                }
 
-       
+                                
+                JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso! ",
+                     "Cadastro de Cliente", JOptionPane.INFORMATION_MESSAGE);
+                
+                limparCampos();
+            } else {
+                JOptionPane.showMessageDialog(null, "Verifique os dados e tente novamente",
+                         "Alerta", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+
+
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jTextFieldCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCpfActionPerformed
@@ -268,8 +287,9 @@ public class TelaCadastroCliente extends javax.swing.JFrame {
             }
         });
     }
+
     //Limpa os campos de texto da tela de cadastro
-    public void limparCampos(){
+    public void limparCampos() {
         jTextFieldNome.setText("");
         jTextFieldCpf.setText("");
         jTextFieldCep.setText("");

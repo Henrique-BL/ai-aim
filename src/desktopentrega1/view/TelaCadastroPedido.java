@@ -1,36 +1,58 @@
-
 package desktopentrega1.view;
 
+import desktopentrega1.controller.ControllerArquivoBinarioCliente;
+import desktopentrega1.controller.ControllerArquivoBinarioPedido;
+import desktopentrega1.controller.ControllerArquivoBinarioProduto;
 import desktopentrega1.controller.ControllerArquivoTextoCliente;
 import desktopentrega1.controller.ControllerArquivoTextoPedido;
 import desktopentrega1.controller.ControllerArquivoTextoProduto;
 import desktopentrega1.model.Pedido;
 
 import java.util.ArrayList;
+import java.util.TimerTask;
+import java.util.Timer;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author henri
+ * @author Henrique RA 2312808
  */
 public class TelaCadastroPedido extends javax.swing.JFrame {
+
     Pedido pedido;
-    ControllerArquivoTextoPedido controller;
-    ControllerArquivoTextoCliente controllerCliente;
-    ControllerArquivoTextoProduto controllerProduto;
-    int id = 0;
+    ControllerArquivoTextoPedido controllerText;
+    ControllerArquivoTextoCliente controllerClienteText;
+    ControllerArquivoTextoProduto controllerProdutoText;  
+  
+    ControllerArquivoBinarioPedido controllerBin;
+    ControllerArquivoBinarioCliente controllerClienteBin;
+    ControllerArquivoBinarioProduto controllerProdutoBin;
     /**
      * Creates new form telaCadastroPedido
      */
-    Thread comboListener = new Thread(new Runnable() { public void run() { 
-        while(!(controllerProduto == null && controllerCliente == null)){
-            carregarComboBoxs();
+    /*Thread comboListener = new Thread(new Runnable() {
+        public void run() {
+            while (!(controllerProduto == null && controllerCliente == null)) {
+                carregarComboBoxs();
+            }
         }
-    }});
+    });*/
+
     public TelaCadastroPedido() {
         initComponents();
-        comboListener.start();
         
+        //Define um tempo de espera para que nao haja choque no processo de inicialização da tela
+        new Timer(). schedule( 
+        new TimerTask() {
+            @Override
+            public void run() {
+                carregarComboBoxs();
+            }
+        }, 
+        1000 
+        );
+        
+
     }
 
     /**
@@ -44,8 +66,6 @@ public class TelaCadastroPedido extends javax.swing.JFrame {
 
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
-        jLabelCodigoPedido = new javax.swing.JLabel();
-        jTextFieldCodigoPedido = new javax.swing.JTextField();
         jTextFieldTransportadora = new javax.swing.JTextField();
         jLabelTransportadora = new javax.swing.JLabel();
         jLabelTitulo = new javax.swing.JLabel();
@@ -61,17 +81,8 @@ public class TelaCadastroPedido extends javax.swing.JFrame {
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
-
-        jLabelCodigoPedido.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jLabelCodigoPedido.setText("Código do Pedido");
-
-        jTextFieldCodigoPedido.setActionCommand("<Not Set>");
-        jTextFieldCodigoPedido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldCodigoPedidoActionPerformed(evt);
-            }
-        });
 
         jTextFieldTransportadora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,15 +142,9 @@ public class TelaCadastroPedido extends javax.swing.JFrame {
                             .addComponent(jComboBoxProduto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jLabelDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabelCodigoPedido)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabelTransportadora)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextFieldTransportadora, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jLabelTransportadora)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addComponent(jTextFieldTransportadora, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(211, 211, 211)
@@ -160,9 +165,7 @@ public class TelaCadastroPedido extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelCliente)
-                    .addComponent(jLabelCodigoPedido)
-                    .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelCliente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -190,57 +193,80 @@ public class TelaCadastroPedido extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldCodigoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCodigoPedidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldCodigoPedidoActionPerformed
-
     private void jTextFieldTransportadoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTransportadoraActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldTransportadoraActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         // TODO add your handling code here:
-        pedido = new Pedido();
-        
-        pedido.setCodigo(++id);
-        pedido.setClienteCPF(controllerCliente.getClientes().get
-                            (jComboBoxCliente.getSelectedIndex()).getCpf());
-        pedido.setCodigoProduto(controllerProduto.getProdutos().get
-                            (jComboBoxProduto.getSelectedIndex()).getId());
-        pedido.setDescricao(jTextAreaDescricaoPedido.getText());
-        pedido.setTransportadora(jTextFieldTransportadora.getText());
-        
-        controller.setPedido(pedido);
-        controller.gravarPedido();
+        try {
+            pedido = new Pedido();
+            if(controllerBin!=null && controllerClienteBin!=null && controllerProdutoBin!=null){
 
-        limparCampos();
+                pedido.setCodigo(controllerBin.getPedidos().size() + 1);
+                pedido.setClienteCPF(controllerClienteBin.getClientes().get(jComboBoxCliente.getSelectedIndex()).getCpf());
+                pedido.setCodigoProduto(controllerProdutoBin.getProdutos().get(jComboBoxProduto.getSelectedIndex()).getId());
 
+            }else{
+                pedido.setCodigo(controllerText.getPedidos().size() + 1);
+                pedido.setClienteCPF(controllerClienteText.getClientes().get(jComboBoxCliente.getSelectedIndex()).getCpf());
+                pedido.setCodigoProduto(controllerProdutoText.getProdutos().get(jComboBoxProduto.getSelectedIndex()).getId());
+                
+            }
+            pedido.setDescricao(jTextAreaDescricaoPedido.getText());
+            pedido.setTransportadora(jTextFieldTransportadora.getText());
+            if(controllerBin!=null){
+
+                controllerBin.setPedido(pedido);
+                controllerBin.gravarPedidos();
+
+            }else{
+                
+                controllerText.setPedido(pedido);
+                controllerText.gravarPedido();
+
+            }
+            limparCampos();
+            
+            JOptionPane.showMessageDialog(null, "Pedido feito com sucesso! ",
+                     "Pedido", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Verifique os dados e tente novamente",
+                         "Alerta", JOptionPane.WARNING_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jComboBoxProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProdutoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxProdutoActionPerformed
-    public void limparCampos(){
+    public void limparCampos() {
         jComboBoxCliente.setSelectedIndex(0);
         jComboBoxProduto.setSelectedIndex(0);
         jTextAreaDescricaoPedido.setText("");
         jTextFieldTransportadora.setText("");
-        jTextFieldCodigoPedido.setText("");
-        
-        
+
     }
-    public void carregarComboBoxs(){
+    //Alimenta os ComboBoxs da tela com suas devidas informações
+    public void carregarComboBoxs() {
         ArrayList<Object> cNomes = new ArrayList();
         ArrayList<Object> pNomes = new ArrayList();
-        controllerCliente.getClientes().forEach((n) -> cNomes.add(n.getNome()));
-        controllerProduto.getProdutos().forEach((n) -> pNomes.add(n.getNome()));
+        if(controllerClienteBin != null && controllerProdutoBin!=null){
+            
+            controllerClienteBin.getClientes().forEach((n) -> cNomes.add(n.getNome()));
+            controllerProdutoBin.getProdutos().forEach((n) -> pNomes.add(n.getNome()));
 
-        jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>
-                                             (cNomes.toArray(new String[0])));
-        jComboBoxProduto.setModel(new javax.swing.DefaultComboBoxModel<>
-                                            (pNomes.toArray(new String[0]))); 
-    
+        }else{
+            
+            controllerClienteText.getClientes().forEach((n) -> cNomes.add(n.getNome()));
+            controllerProdutoText.getProdutos().forEach((n) -> pNomes.add(n.getNome()));
+
+        }
+        jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(cNomes.toArray(new String[0])));
+        jComboBoxProduto.setModel(new javax.swing.DefaultComboBoxModel<>(pNomes.toArray(new String[0])));
+
     }
+
     /**
      * @param args the command line arguments
      */
@@ -276,7 +302,7 @@ public class TelaCadastroPedido extends javax.swing.JFrame {
                 new TelaCadastroPedido().setVisible(true);
             }
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -284,7 +310,6 @@ public class TelaCadastroPedido extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxCliente;
     private javax.swing.JComboBox<String> jComboBoxProduto;
     private javax.swing.JLabel jLabelCliente;
-    private javax.swing.JLabel jLabelCodigoPedido;
     private javax.swing.JLabel jLabelDescricao;
     private javax.swing.JLabel jLabelProduto;
     private javax.swing.JLabel jLabelTitulo;
@@ -293,7 +318,6 @@ public class TelaCadastroPedido extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextAreaDescricaoPedido;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextFieldCodigoPedido;
     private javax.swing.JTextField jTextFieldTransportadora;
     // End of variables declaration//GEN-END:variables
 }

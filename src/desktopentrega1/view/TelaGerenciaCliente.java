@@ -1,14 +1,18 @@
 package desktopentrega1.view;
 
+import desktopentrega1.controller.ControllerArquivoBinarioCliente;
 import desktopentrega1.model.Cliente;
 import desktopentrega1.controller.ControllerArquivoTextoCliente;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author henri
+ * @author Henrique RA 2312808
  */
 public class TelaGerenciaCliente extends javax.swing.JFrame {
-    ControllerArquivoTextoCliente controller ;
+
+    ControllerArquivoTextoCliente controllerText;
+    ControllerArquivoBinarioCliente controllerBin;
     Cliente cliente;
 
     /**
@@ -58,6 +62,7 @@ public class TelaGerenciaCliente extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jTextFieldPesquisa.setText("Digite o CPF do cliente aqui");
@@ -103,6 +108,7 @@ public class TelaGerenciaCliente extends javax.swing.JFrame {
         jLabelEndereco.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabelEndereco.setText("Endereço");
 
+        jTextFieldCpf.setEditable(false);
         jTextFieldCpf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCpfActionPerformed(evt);
@@ -208,11 +214,27 @@ public class TelaGerenciaCliente extends javax.swing.JFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
-        cliente = controller.buscarCliente(jTextFieldPesquisa.getText());
-        controller.excluirCliente(cliente.getCpf());
-        limparCampos();
-        
-        
+        try {
+            if(controllerBin !=null){
+                cliente = controllerBin.buscarCliente(jTextFieldPesquisa.getText());
+                controllerBin.excluirCliente(cliente.getCpf());
+
+            }else{
+                cliente = controllerText.buscarCliente(jTextFieldPesquisa.getText());
+                controllerText.excluirCliente(cliente.getCpf());
+            
+                
+            }
+            JOptionPane.showMessageDialog(null, "Cliente excluido com sucesso! ",
+                    "Exclusao de Cliente", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Cliente não excluído",
+                    "Alerta", JOptionPane.WARNING_MESSAGE);
+
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void jTextFieldCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCpfActionPerformed
@@ -225,35 +247,60 @@ public class TelaGerenciaCliente extends javax.swing.JFrame {
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         // TODO add your handling code here:
-        cliente = new Cliente();
-        
-        cliente.setNome(jTextFieldNome.getText());
-        cliente.setCpf(jTextFieldCpf.getText());
-        cliente.setCep(jTextFieldCep.getText());
-        cliente.setTelefone(jTextFieldTelefone.getText());
-        cliente.setEmail(    jTextFieldEmail.getText());
-        cliente.setEndereco(jTextFieldEndereco.getText());
-       
-        controller.lerClientes();
-        controller.editarCliente(cliente);
-        limparCampos();
+        try {
+            cliente = new Cliente();
+
+            cliente.setNome(jTextFieldNome.getText());
+            cliente.setCpf(jTextFieldCpf.getText());
+            cliente.setCep(jTextFieldCep.getText());
+            cliente.setTelefone(jTextFieldTelefone.getText());
+            cliente.setEmail(jTextFieldEmail.getText());
+            cliente.setEndereco(jTextFieldEndereco.getText());
+            
+            if(controllerBin!=null){
+                controllerBin.lerClientes();
+                controllerBin.editarCliente(cliente);   
+            }else{
+                controllerText.lerClientes();
+                controllerText.editarCliente(cliente);
+            }
+            limparCampos();
+
+            JOptionPane.showMessageDialog(null, "Cliente editado!",
+                    "Edição Cliente", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro",
+                    "Alerta", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
         // TODO add your handling code here:
-        cliente = controller.buscarCliente(jTextFieldPesquisa.getText());
-        jTextFieldNome.setText(cliente.getNome());
-        jTextFieldCpf.setText(cliente.getCpf());
-        jTextFieldCep.setText(cliente.getCep());
-        jTextFieldTelefone.setText(cliente.getTelefone());
-        jTextFieldEmail.setText(cliente.getEmail());
-        jTextFieldEndereco.setText(cliente.getEndereco());
-        
+        try {
+            if(controllerBin !=null){
+                cliente = controllerBin.buscarCliente(jTextFieldPesquisa.getText());
+                
+            }else{
+                cliente = controllerText.buscarCliente(jTextFieldPesquisa.getText());
+            }
+            jTextFieldNome.setText(cliente.getNome());
+            jTextFieldCpf.setText(cliente.getCpf());
+            jTextFieldCep.setText(cliente.getCep());
+            jTextFieldTelefone.setText(cliente.getTelefone());
+            jTextFieldEmail.setText(cliente.getEmail());
+            jTextFieldEndereco.setText(cliente.getEndereco());
+
+        } catch (Exception e) {
+           JOptionPane.showMessageDialog(null, "Cliente não encontrado",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
-        //Limpa os campos de texto da tela de cadastro
-    public void limparCampos(){
-        jTextFieldPesquisa.setText("");
+    //Limpa os campos de texto da tela de cadastro
+    public void limparCampos() {
         jTextFieldNome.setText("");
         jTextFieldCpf.setText("");
         jTextFieldCep.setText("");
@@ -261,6 +308,7 @@ public class TelaGerenciaCliente extends javax.swing.JFrame {
         jTextFieldEmail.setText("");
         jTextFieldEndereco.setText("");
     }
+
     /**
      * @param args the command line arguments
      */

@@ -1,26 +1,35 @@
-
 package desktopentrega1.view;
 
+import desktopentrega1.controller.ControllerArquivoBinarioCliente;
+import desktopentrega1.controller.ControllerArquivoBinarioPedido;
+import desktopentrega1.controller.ControllerArquivoBinarioProduto;
 import desktopentrega1.controller.ControllerArquivoTextoCliente;
 import desktopentrega1.controller.ControllerArquivoTextoPedido;
 import desktopentrega1.controller.ControllerArquivoTextoProduto;
 import desktopentrega1.model.Cliente;
 import desktopentrega1.model.Pedido;
 import desktopentrega1.model.Produto;
-import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author henri
+ * @author Henrique RA 2312808
  */
 public class TelaGerenciaPedido extends javax.swing.JFrame {
+
     Pedido pedido;
     Cliente cliente;
     Produto produto;
-    ControllerArquivoTextoPedido controller;
-    
-    ControllerArquivoTextoCliente controllerCliente = new ControllerArquivoTextoCliente() ;
-    ControllerArquivoTextoProduto controllerProduto = new ControllerArquivoTextoProduto();
+    ControllerArquivoTextoPedido controllerText;
+
+    ControllerArquivoTextoCliente controllerClienteText;
+    ControllerArquivoTextoProduto controllerProdutoText;
+
+    ControllerArquivoBinarioPedido controllerBin;
+
+    ControllerArquivoBinarioCliente controllerClienteBin;
+    ControllerArquivoBinarioProduto controllerProdutoBin;
+
     /**
      * Creates new form telaCadastroPedido
      */
@@ -68,6 +77,7 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
         jButtonSalvar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabelTitulo.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -89,12 +99,14 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
         jLabelEndereco.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabelEndereco.setText("Endereço");
 
+        jTextFieldCpf.setEditable(false);
         jTextFieldCpf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCpfActionPerformed(evt);
             }
         });
 
+        jTextFieldNomeProduto.setEditable(false);
         jTextFieldNomeProduto.setActionCommand("<Not Set>");
         jTextFieldNomeProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,16 +114,22 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
             }
         });
 
+        jTextFieldEmail.setEnabled(false);
+
+        jTextFieldTelefone.setEnabled(false);
         jTextFieldTelefone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldTelefoneActionPerformed(evt);
             }
         });
 
+        jTextFieldEndereco.setEnabled(false);
+
         jLabelNomeProduto.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabelNomeProduto.setText("Nome do Produto");
 
         jTextFieldNomeCliente.setActionCommand("<Not Set>");
+        jTextFieldNomeCliente.setEnabled(false);
         jTextFieldNomeCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNomeClienteActionPerformed(evt);
@@ -137,6 +155,7 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
         jLabelNome.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabelNome.setText("Nome");
 
+        jTextFieldCodigoPedido.setEditable(false);
         jTextFieldCodigoPedido.setActionCommand("<Not Set>");
         jTextFieldCodigoPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,15 +214,12 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
                                     .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 67, Short.MAX_VALUE))
                             .addGroup(jPanelBodyLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButtonPesquisar)
-                                    .addComponent(jLabelTransportadora))))
+                                .addGap(0, 332, Short.MAX_VALUE)
+                                .addComponent(jButtonPesquisar)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelEndereco)
-                            .addComponent(jTextFieldTransportadora, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelEndereco))
                         .addGap(22, 22, 22))))
             .addGroup(jPanelBodyLayout.createSequentialGroup()
                 .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,11 +231,6 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
                         .addComponent(jLabelDetalhesProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelBodyLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabelCodigoPedido)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelBodyLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabelTitulo2))
                     .addGroup(jPanelBodyLayout.createSequentialGroup()
                         .addGap(160, 160, 160)
@@ -228,6 +239,16 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabelTitulo1)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanelBodyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelCodigoPedido)
+                .addGap(18, 18, 18)
+                .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelTransportadora)
+                .addGap(18, 18, 18)
+                .addComponent(jTextFieldTransportadora, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanelBodyLayout.setVerticalGroup(
             jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,17 +256,12 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
                 .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonPesquisar))
-                .addGap(1, 1, 1)
-                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelBodyLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCodigoPedido)
-                            .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldTransportadora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanelBodyLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelTransportadora)))
+                .addGap(32, 32, 32)
+                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCodigoPedido)
+                    .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTransportadora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTransportadora))
                 .addGap(117, 117, 117)
                 .addComponent(jLabelTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -301,7 +317,7 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
         jPanelFooter.setLayout(jPanelFooterLayout);
         jPanelFooterLayout.setHorizontalGroup(
             jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFooterLayout.createSequentialGroup()
+            .addGroup(jPanelFooterLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -311,10 +327,11 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
         jPanelFooterLayout.setVerticalGroup(
             jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFooterLayout.createSequentialGroup()
-                .addGap(0, 75, Short.MAX_VALUE)
+                .addGap(0, 34, Short.MAX_VALUE)
                 .addGroup(jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonExcluir)
-                    .addComponent(jButtonSalvar1)))
+                    .addComponent(jButtonSalvar1)
+                    .addComponent(jButtonExcluir))
+                .addGap(41, 41, 41))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -375,60 +392,115 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
-        pedido = controller.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
-        controller.excluirPedido(pedido.getCodigo());
-        limparCampos();
+        try {
+            if (controllerBin != null) {
+
+                pedido = controllerBin.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
+                controllerBin.excluirPedido(pedido.getCodigo());
+
+            } else {
+                pedido = controllerText.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
+                controllerText.excluirPedido(pedido.getCodigo());
+            }
+            JOptionPane.showMessageDialog(null, "Pedido excluido com sucesso",
+                    "Pedido", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro",
+                    "Alerta", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
 
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void jButtonSalvar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvar1ActionPerformed
         // TODO add your handling code here:
-        pedido = controller.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
-        pedido.setTransportadora(jTextFieldTransportadora.getText());
-        controller.editarPedido(pedido);
-        limparCampos();
+        try {
+
+            if (controllerBin != null) {
+
+                pedido = controllerBin.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
+
+                pedido.setTransportadora(jTextFieldTransportadora.getText());
+                controllerBin.editarPedido(pedido);
+
+            } else {
+
+                pedido = controllerText.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
+
+                pedido.setTransportadora(jTextFieldTransportadora.getText());
+                controllerText.editarPedido(pedido);
+
+            }
+
+            limparCampos();
+
+            JOptionPane.showMessageDialog(null, "Pedido editado com sucesso",
+                    "Pedido", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, "Verifique os dados!",
+                    "Pedido", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButtonSalvar1ActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
         // TODO add your handling code here:
-        pedido = controller.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
-        
-        cliente = controllerCliente.buscarCliente(pedido.getClienteCPF());
-        produto = controllerProduto.buscarProduto(pedido.getCodigoProduto());
-        
-        jTextFieldCodigoPedido.setText(String.valueOf(pedido.getCodigo()));
-        jTextFieldTransportadora.setText(pedido.getTransportadora());
-        
-        jTextFieldNomeCliente.setText(cliente.getNome());
-        jTextFieldCpf.setText(cliente.getCpf());
-        jTextFieldTelefone.setText(cliente.getTelefone());
-        jTextFieldEmail.setText(cliente.getEmail());
-        jTextFieldEndereco.setText(cliente.getEndereco());
-        
-        jTextFieldNomeProduto.setText(produto.getNome());
-        jTextAreaDetalhesProduto.setText(produto.getDescricao());
-        
-        
+        try {
+            if (controllerBin != null) {
+
+                pedido = controllerBin.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
+
+                cliente = controllerClienteBin.buscarCliente(pedido.getClienteCPF()); 
+                produto = controllerProdutoBin.buscarProduto(pedido.getCodigoProduto());
+
+            } else {
+
+                pedido = controllerText.buscarPedido(Integer.parseInt(jTextFieldPesquisa.getText()));
+
+                cliente = controllerClienteText.buscarCliente(pedido.getClienteCPF());
+                produto = controllerProdutoText.buscarProduto(pedido.getCodigoProduto());
+
+            }
+            jTextFieldCodigoPedido.setText(String.valueOf(pedido.getCodigo()));
+            jTextFieldTransportadora.setText(pedido.getTransportadora());
+
+            jTextFieldNomeCliente.setText(cliente.getNome());
+            jTextFieldCpf.setText(cliente.getCpf());
+            jTextFieldTelefone.setText(cliente.getTelefone());
+            jTextFieldEmail.setText(cliente.getEmail());
+            jTextFieldEndereco.setText(cliente.getEndereco());
+
+            jTextFieldNomeProduto.setText(produto.getNome());
+            jTextAreaDetalhesProduto.setText(produto.getDescricao());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Pedido não encontrado",
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void jTextFieldPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPesquisaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldPesquisaActionPerformed
-    public void limparCampos(){
-        
+    public void limparCampos() {
+
         jTextFieldCodigoPedido.setText("");
         jTextFieldTransportadora.setText("");
-        
+
         jTextFieldNomeCliente.setText("");
         jTextFieldCpf.setText("");
         jTextFieldTelefone.setText("");
         jTextFieldEmail.setText("");
         jTextFieldEndereco.setText("");
-        
+
         jTextFieldNomeProduto.setText("");
         jTextAreaDetalhesProduto.setText("");
-        
+
     }
+
     /**
      * @param args the command line arguments
      */
@@ -458,7 +530,7 @@ public class TelaGerenciaPedido extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
+        //</editor-fold>s
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

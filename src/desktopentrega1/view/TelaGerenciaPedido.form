@@ -3,6 +3,7 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -105,18 +106,14 @@
                                   <EmptySpace min="0" pref="67" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jButtonPesquisar" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabelTransportadora" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <EmptySpace min="0" pref="332" max="32767" attributes="0"/>
+                                  <Component id="jButtonPesquisar" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jTextFieldEndereco" min="-2" pref="140" max="-2" attributes="0"/>
                               <Component id="jLabelEndereco" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldTransportadora" alignment="0" min="-2" pref="140" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       </Group>
@@ -134,12 +131,6 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabelCodigoPedido" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jTextFieldCodigoPedido" min="-2" pref="140" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabelTitulo2" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -153,6 +144,17 @@
                   </Group>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabelCodigoPedido" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jTextFieldCodigoPedido" min="-2" pref="140" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jLabelTransportadora" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jTextFieldTransportadora" min="-2" pref="140" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -162,17 +164,12 @@
                       <Component id="jTextFieldPesquisa" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonPesquisar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabelCodigoPedido" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldCodigoPedido" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldTransportadora" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Component id="jLabelTransportadora" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabelCodigoPedido" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldCodigoPedido" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldTransportadora" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelTransportadora" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="117" max="-2" attributes="0"/>
                   <Component id="jLabelTitulo2" min="-2" pref="23" max="-2" attributes="0"/>
@@ -262,12 +259,16 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldCpf">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldCpfActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldNomeProduto">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="actionCommand" type="java.lang.String" value="&lt;Not Set&gt;"/>
           </Properties>
           <Events>
@@ -275,13 +276,22 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldEmail">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldTelefone">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldTelefoneActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldEndereco">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNomeProduto">
           <Properties>
@@ -294,6 +304,7 @@
         <Component class="javax.swing.JTextField" name="jTextFieldNomeCliente">
           <Properties>
             <Property name="actionCommand" type="java.lang.String" value="&lt;Not Set&gt;"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldNomeClienteActionPerformed"/>
@@ -351,6 +362,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldCodigoPedido">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="actionCommand" type="java.lang.String" value="&lt;Not Set&gt;"/>
           </Properties>
           <Events>
@@ -393,7 +405,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButtonExcluir" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -405,11 +417,12 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="0" pref="75" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="34" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButtonExcluir" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonSalvar1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonExcluir" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

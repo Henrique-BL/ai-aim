@@ -1,6 +1,9 @@
 package desktopentrega1.model;
 
-public class Cliente {
+import java.io.Serializable;
+
+public class Cliente implements Serializable{
+    private static long serialVersionUID = 1L;
     private String cpf;
     private String cep;
     private String nome;

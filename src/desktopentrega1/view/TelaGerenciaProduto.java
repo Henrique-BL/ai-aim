@@ -1,19 +1,22 @@
-
 package desktopentrega1.view;
 
+import desktopentrega1.controller.ControllerArquivoBinarioProduto;
 import desktopentrega1.controller.ControllerArquivoTextoProduto;
 import desktopentrega1.model.Produto;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author henri
+ * @author Henrique RA 2312808
  */
 public class TelaGerenciaProduto extends javax.swing.JFrame {
+
     Produto produto;
-    ControllerArquivoTextoProduto controller;
+    ControllerArquivoTextoProduto controllerText;
+    ControllerArquivoBinarioProduto controllerBin;
+
     /**
      * Creates new form telaGerenciaProduto
      */
@@ -48,9 +51,10 @@ public class TelaGerenciaProduto extends javax.swing.JFrame {
         jTextAreaDescricao = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        jTextFieldPesquisa.setText("Digite o nome do produto aqiui");
+        jTextFieldPesquisa.setText("Digite o nome do produto aqui");
         jTextFieldPesquisa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldPesquisaActionPerformed(evt);
@@ -93,6 +97,7 @@ public class TelaGerenciaProduto extends javax.swing.JFrame {
         jLabelDescricao.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabelDescricao.setText("Descrição");
 
+        jTextFieldCodigo.setEditable(false);
         jTextFieldCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCodigoActionPerformed(evt);
@@ -201,44 +206,87 @@ public class TelaGerenciaProduto extends javax.swing.JFrame {
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
         // TODO add your handling code here:
-        produto = controller.buscarProduto(jTextFieldPesquisa.getText());
-        jTextFieldNome.setText(produto.getNome());
-        jTextFieldCodigo.setText(String.valueOf(produto.getId()));
-        jTextAreaDescricao.setText(produto.getDescricao());
-        jTextFieldDataCompra.setText(produto.converterData(produto.getDataCompra()));
-        jTextFieldDataVencimento.setText(produto.converterData(produto.getDataVencimento()));
-       
+        try {
+
+            if(controllerBin != null){
+                
+                produto = controllerBin.buscarProduto(jTextFieldPesquisa.getText());
+            
+            }else{
+                
+                produto = controllerText.buscarProduto(jTextFieldPesquisa.getText());
+
+            }
+            jTextFieldNome.setText(produto.getNome());
+            jTextFieldCodigo.setText(String.valueOf(produto.getId()));
+            jTextAreaDescricao.setText(produto.getDescricao());
+            jTextFieldDataCompra.setText(produto.converterData(produto.getDataCompra()));
+            jTextFieldDataVencimento.setText(produto.converterData(produto.getDataVencimento()));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado",
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
 
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         try {
             // TODO add your handling code here:
+
             produto = new Produto();
-            
+
             produto.setNome(jTextFieldNome.getText());
             produto.setId(Integer.parseInt(jTextFieldCodigo.getText()));
-            
+
             produto.setDataCompra(new SimpleDateFormat("dd/MM/yyyy").
                     parse(jTextFieldDataVencimento.getText()));
             produto.setDataVencimento(new SimpleDateFormat("dd/MM/yyyy").
-                    parse( jTextFieldDataCompra.getText()));
+                    parse(jTextFieldDataCompra.getText()));
             produto.setDescricao(jTextAreaDescricao.getText());
-            
-            controller.editarProduto(produto);
-            
+
+            if(controllerBin!=null){
+                controllerBin.editarProduto(produto);
+            }else{
+                controllerText.editarProduto(produto);
+            }
+
             limparCampos();
+
+            JOptionPane.showMessageDialog(null, "Produto editado com sucesso",
+                    "Produto", JOptionPane.INFORMATION_MESSAGE);
         } catch (ParseException ex) {
+
+            JOptionPane.showMessageDialog(null, "Verifique os dados",
+                    "Produto", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
-        produto = controller.buscarProduto(jTextFieldPesquisa.getText());
-        controller.excluirProduto(produto.getNome());
-        limparCampos();
+        try {
+            if(controllerBin!=null){
 
+                produto = controllerBin.buscarProduto(jTextFieldPesquisa.getText());
+                controllerBin.excluirProduto(produto.getNome());
+
+            }else{
+                
+                produto = controllerText.buscarProduto(jTextFieldPesquisa.getText());
+                controllerText.excluirProduto(produto.getNome());
+
+            }
+            limparCampos();
+
+            JOptionPane.showMessageDialog(null, "Produto excluido com sucesso",
+                    "Produto", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(null, "Algo deu errado",
+                    "Produtos", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void jTextFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNomeActionPerformed
@@ -248,15 +296,16 @@ public class TelaGerenciaProduto extends javax.swing.JFrame {
     private void jTextFieldCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCodigoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldCodigoActionPerformed
-    public void limparCampos(){
-        
+    public void limparCampos() {
+
         jTextFieldNome.setText("");
         jTextFieldCodigo.setText("");
         jTextAreaDescricao.setText("");
         jTextFieldDataCompra.setText("");
         jTextFieldDataVencimento.setText("");
-        
+
     }
+
     /**
      * @param args the command line arguments
      */

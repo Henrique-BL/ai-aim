@@ -1,5 +1,6 @@
 package desktopentrega1.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,7 +9,8 @@ import java.util.Date;
  * @author henri
  */
 
-public class Produto {
+public class Produto  implements Serializable{
+    private static long serialVersionUID = 1L;
     private int id;
     private String nome;
     private String descricao;

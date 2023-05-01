@@ -1,0 +1,9 @@
+Para correto funcionamento da aplicação é necessário instalar na IDE utilizada a bibliotecar JCalendar localizada
+na pasta lib dentro de src
+
+NETBEANS = Ferramentas > Paleta > Componentes Swing/AWT > Adicionar Jar (escolha uma categoria ou crie uma nova)
+
+
+**Informações Importantes**
+- campo de busca de produtos por nome é case sensitive, então cuidado no momento de cadastrar
+- cadastro e gerencia de pedidos depende dos arquivos de cliente e produto, além do de pedido

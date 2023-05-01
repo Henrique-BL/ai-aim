@@ -5,24 +5,23 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author henri
+ * @author Henrique - RA2312808
  */
 public class ControllerArquivoTextoCliente extends ControllerArquivoTexto {
     
     protected Cliente cliente;
     protected ArrayList<Cliente> clientes = new ArrayList();
 
+    /*Define o arquivo para salvar os clientes e alimenta o arrayList com os dados do a
+    arquivo*/
     public void lerClientes() {
         clientes.clear();
-        setArquivo("Abrir");
+        setArquivo("Abrir arquivo de Clientes");
         ler();
         String aux = getTexto();
-        StringTokenizer auxiliar = new StringTokenizer(aux, "\n");
-        
-        while(auxiliar.hasMoreTokens()){
-            StringTokenizer tokens = new StringTokenizer(auxiliar.nextToken(),"-");
-            while (tokens.hasMoreTokens()) {
-                cliente = new Cliente();
+        StringTokenizer tokens =  new StringTokenizer(aux,"\n-");
+        while(tokens.hasMoreTokens()){
+               cliente = new Cliente();
                 cliente.setNome(tokens.nextToken() );
                 cliente.setCpf(tokens.nextToken());
                 cliente.setEmail(tokens.nextToken());
@@ -30,11 +29,13 @@ public class ControllerArquivoTextoCliente extends ControllerArquivoTexto {
                 cliente.setEndereco(tokens.nextToken());
                 cliente.setCep(tokens.nextToken());
                 clientes.add(cliente);
-            }
+            
         }
         
+        
     }
-
+    
+    /*Escreve no arquivo todos os clientes do arrayList*/
     public void gravarClientes() {
         String aux = "";
                     
@@ -48,6 +49,8 @@ public class ControllerArquivoTextoCliente extends ControllerArquivoTexto {
        
 
     }
+    
+    /*Escreve no arquivo apenas um cliente*/
     public void gravarCliente() {
         String aux = cliente.toString();
         setTexto(aux);
@@ -56,6 +59,8 @@ public class ControllerArquivoTextoCliente extends ControllerArquivoTexto {
        
 
     }
+    
+    /*Busca cliente no arrayList utilizando o CPF e devolve o objeto correspondente*/
     public Cliente buscarCliente(String cpf){
         lerClientes();
         for(Cliente cliente : clientes){
@@ -66,6 +71,8 @@ public class ControllerArquivoTextoCliente extends ControllerArquivoTexto {
         return null;
         
     }
+    
+    /*Recebe um cliente com informações modificadas e altera no arquivo*/
     public boolean editarCliente(Cliente cliente){
         
         Cliente aux = buscarCliente(cliente.getCpf());
@@ -76,6 +83,8 @@ public class ControllerArquivoTextoCliente extends ControllerArquivoTexto {
         
         
     }
+    
+    /*Recebe o CPF de um cliente existente e exclui ele do arquivo*/
     public Cliente excluirCliente(String cpf){
         Cliente cliente = buscarCliente(cpf);
         int index = clientes.indexOf(cliente);

@@ -1,17 +1,21 @@
-
 package desktopentrega1.view;
 
+import desktopentrega1.controller.ControllerArquivoBinarioProduto;
 import desktopentrega1.controller.ControllerArquivoTextoProduto;
 import desktopentrega1.model.Produto;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author henri
+ * @author Henrique RA 2312808
  */
 public class TelaCadastroProduto extends javax.swing.JFrame {
-    ControllerArquivoTextoProduto controller;
+
+    ControllerArquivoTextoProduto controllerText;
+    ControllerArquivoBinarioProduto controllerBin;
     Produto produto;
-    int id = 0;
+
+
     /**
      * Creates new form telaCadastroProduto
      */
@@ -44,6 +48,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         jButtonSalvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabelTitulo.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -187,27 +192,49 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         // TODO add your handling code here:
-        produto = new Produto();
-        
-        produto.setId(++id);
-        produto.setNome(jTextFieldNome.getText());
-        produto.setDescricao(jTextAreaDescricao.getText());
-        produto.setDataCompra(jDateChooserCompra.getDate());
-        produto.setDataVencimento(jDateChooserVencimento.getDate());
-        
-        controller.setProduto(produto);
-        controller.gravarProduto();
-        limparCampos();
-        
-        
+        try {
+            produto = new Produto();
+            if(controllerBin!=null){
+             
+                produto.setId(controllerBin.getProdutos().size() + 1);
+               
+            }else{
+                
+                produto.setId(controllerText.getProdutos().size() + 1);
+            
+            }
+            produto.setNome(jTextFieldNome.getText());
+            produto.setDescricao(jTextAreaDescricao.getText());
+            produto.setDataCompra(jDateChooserCompra.getDate());
+            produto.setDataVencimento(jDateChooserVencimento.getDate());
+            
+            if(controllerBin!=null){
+                controllerBin.setProduto(produto);
+                controllerBin.gravarProdutos();
+            }else{
+                controllerText.setProduto(produto);
+                controllerText.gravarProduto();                
+            }
+            limparCampos();
+            
+            JOptionPane.showMessageDialog(null, "Produto salvo com sucesso",
+                    "Produto", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, "Verifique os dados",
+                    "Produto", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
 
     }//GEN-LAST:event_jButtonSalvarActionPerformed
-    public void limparCampos(){
+    public void limparCampos() {
         jTextFieldNome.setText("");
         jTextAreaDescricao.setText("");
         jDateChooserCompra.setDate(null);
         jDateChooserVencimento.setDate(null);
     }
+
     /**
      * @param args the command line arguments
      */

@@ -1,11 +1,14 @@
 
 package desktopentrega1.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author henri
  */
-public class Pedido {
+public class Pedido  implements Serializable {
+    private static long serialVersionUID = 1L;
     private int codigo;
     private int codigoProduto;
     private String clienteCPF;
